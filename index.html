@@ -39,15 +39,14 @@
     }
 
 .chest-img.open {
-  animation: openChest 2.8s forwards;
+  animation: openChest 3s forwards;
 }
 
 @keyframes openChest {
   10%  { transform: scale(1.1) rotate(10deg); }  
-  20%  { transform: scale(1.1) rotate(-10deg); }
-  35%  { transform: scale(1.1) rotate(10deg); }
-  50%  { transform: scale(1.2) rotate(-10deg); }
-
+  30%  { transform: scale(1.1) rotate(-10deg); }
+  55%  { transform: scale(1.1) rotate(10deg); }
+  80%  { transform: scale(1.2) rotate(-10deg); }
   100% { transform: scale(0) rotate(0deg); }
 }
 
@@ -56,8 +55,8 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 300px;
-      height: 300px;
+      width: 350px;
+      height: 350px;
       background: rgba(255, 255, 255, 0.8);
       border-radius: 50%;
       transform: translate(-50%, -50%) scale(0);
