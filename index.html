@@ -113,19 +113,37 @@
         transform: scale(1);
         animation: rewardAnimation 0.5s forwards;
     }
-    @keyframes rewardAnimation {
-        0% {
-        transform: scale(0.5);
-        opacity: 0;
-        }
-        50% {
-        transform: scale(1.1);
-        opacity: 1;
-        }
-        100% {
-        transform: scale(1);
-        }
-    }
+    
+@keyframes hextechReward {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+    filter: drop-shadow(0 0 0 rgba(255, 223, 93, 0));
+  }
+  30% {
+    transform: scale(1.15);
+    opacity: 1;
+    filter: drop-shadow(0 0 20px rgba(255, 223, 93, 0.8));
+  }
+  50% {
+    transform: scale(0.95);
+    filter: drop-shadow(0 0 12px rgba(255, 223, 93, 0.7));
+  }
+  70% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 18px rgba(255, 223, 93, 0.85));
+  }
+  85% {
+    transform: scale(1.02);
+    filter: drop-shadow(0 0 16px rgba(255, 223, 93, 0.8));
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    filter: drop-shadow(0 0 14px rgba(255, 223, 93, 0.7));
+  }
+}
+
 
     #reward_container.show {
       opacity: 1;
@@ -192,7 +210,7 @@
         // Bước 2: sau 1s, bật hiệu ứng splash reward-img
         setTimeout(function(){
           $rewardContainer.addClass('show-reward');
-        }, 300); // Tăng thời gian để đồng bộ với hiệu ứng
+        }, 500); // Tăng thời gian để đồng bộ với hiệu ứng
       }, 2800);
     });
   });
