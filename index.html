@@ -38,34 +38,61 @@
       transition: transform 0.2s;
     }
 
-    .chest-img.open {
-      animation: openChest 1.5s forwards;
-    }
+.chest-img.open {
+  animation: openChest 2.8s forwards;
+}
 
-    @keyframes openChest {
-      0% { transform: scale(1) rotate(0deg); }
-      20% { transform: scale(1.1) rotate(-10deg); }
-      50% { transform: scale(1.5) rotate(10deg); }
-      80% { transform: scale(1.2) rotate(0deg); }
-      100% { transform: scale(0) rotate(0deg); }
-    }
+@keyframes openChest {
+  10%  { transform: scale(1.1) rotate(10deg); }  
+  20%  { transform: scale(1.1) rotate(-10deg); }
+  35%  { transform: scale(1.1) rotate(10deg); }
+  50%  { transform: scale(1.2) rotate(-10deg); }
 
-    .chest-glow {
+  100% { transform: scale(0) rotate(0deg); }
+}
+
+    /* Hiệu ứng ánh sáng */
+    .light-effect {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 280px;
-      height: 280px;
-      background: radial-gradient(circle, rgba(255,255,0,0.5) 0%, rgba(0,0,0,0) 80%);
+      width: 300px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.8);
       border-radius: 50%;
       transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
       transition: transform 0.5s, opacity 0.5s;
-      pointer-events: none;
-      z-index: -1;
+      z-index: 10;
     }
 
-    .chest-glow.active {
+    .light-effect.active {
+      transform: translate(-50%, -50%) scale(1);
       opacity: 1;
+    }
+
+    /* Hiệu ứng nổ */
+    .explosion {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255, 255, 0, 0.8) 0%, rgba(255, 0, 0, 0) 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.5s ease-out;
+      z-index: 5;
+    }
+
+    .explosion.active {
+      transform: translate(-50%, -50%) scale(1);
+      animation: explode 0.8s forwards;
+    }
+
+    @keyframes explode {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
     }
 
     /* NEW: Reward container animation */
@@ -83,7 +110,6 @@
     @media(max-width:480px) {
       h1 { font-size: 2rem; }
       .chest-container { width: 160px; height: 160px; }
-      .chest-glow { width: 220px; height: 220px; }
     }
   </style>
 </head>
@@ -95,7 +121,8 @@
     <!-- Chest -->
     <div class="col-12">
       <div id="chest_container" class="chest-container">
-        <div class="chest-glow" id="glow"></div>
+        <!-- <div class="light-effect" id="lightEffect"></div> -->
+        <div class="explosion" id="explosionEffect"></div>
         <img src="hextex.png" alt="Hextech Chest" id="chest" class="chest-img">
       </div>
     </div>
@@ -109,22 +136,32 @@
     </div>
   </div>
 
+  <audio id="chestSound" src="chest_open_sound.mp3" preload="auto"></audio>
+
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
     $(document).ready(function(){
       $('#chest').click(function(){
         var $this = $(this);
-        var $glow = $('#glow');
+        var $lightEffect = $('#lightEffect');
+        var $explosionEffect = $('#explosionEffect');
+        var $chestSound = $('#chestSound')[0];
 
         // Ngăn spam click
         if ($this.hasClass('open')) return;
 
         // Bật glow và animation mở
-        $glow.addClass('active');
         $this.addClass('open');
+        $lightEffect.addClass('active');
+        $explosionEffect.addClass('active');
+
+        // Phát âm thanh
+        $chestSound.play();
 
         // Sau 1.5s => Ẩn chest, hiện reward mượt mà
         setTimeout(function(){
+          $lightEffect.removeClass('active'); // Xóa hiệu ứng ánh sáng
+          $explosionEffect.removeClass('active'); // Xóa hiệu ứng nổ
           $('#chest_container').addClass('d-none');
           $('#reward_container').removeClass('d-none');
 
@@ -132,7 +169,7 @@
           setTimeout(function(){
             $('#reward_container').addClass('show');
           }, 50);
-        }, 1500);
+        }, 3000);
       });
     });
   </script>
